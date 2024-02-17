@@ -3,44 +3,55 @@
  */
 #include <BleKeyboard.h>
 
-BleKeyboard bleKeyboard;
+BleKeyboard bleKB;
 
-void setup() {
-  Serial.begin(115200);
-  Serial.println("Starting BLE work!");
-  bleKeyboard.begin();
+void setup()
+{
+    Serial.begin(115200);
+    Serial.println("Starting BLE work!");
+    bleKB.setBatteryLevel(80);
+    bleKB.setName("kbName");
+    bleKB.set_vendor_id(0x3333);
+    bleKB.set_product_id(0x3333);
+    bleKB.begin();
 }
 
-void loop() {
-  if(bleKeyboard.isConnected()) {
-    Serial.println("Sending 'Hello world'...");
-    bleKeyboard.print("Hello world");
+void loop()
+{
+    if (bleKB.isConnected())
+    {
+        Serial.println("Sending 'Hello world'...");
+        bleKB.print("Hello world");
 
-    delay(1000);
+        delay(1000);
 
-    Serial.println("Sending Enter key...");
-    bleKeyboard.write(KEY_RETURN);
+        Serial.println("Sending Enter key...");
+        bleKB.write(KEY_RETURN);
 
-    delay(1000);
+        delay(1000);
 
-    Serial.println("Sending Play/Pause media key...");
-    bleKeyboard.write(KEY_MEDIA_PLAY_PAUSE);
+        Serial.println("Sending Play/Pause media key...");
+        bleKB.write(KEY_MEDIA_PLAY_PAUSE);
 
-    delay(1000);
+        delay(1000);
 
-   //
-   // Below is an example of pressing multiple keyboard modifiers 
-   // which by default is commented out.
-    /*
-    Serial.println("Sending Ctrl+Alt+Delete...");
-    bleKeyboard.press(KEY_LEFT_CTRL);
-    bleKeyboard.press(KEY_LEFT_ALT);
-    bleKeyboard.press(KEY_DELETE);
-    delay(100);
-    bleKeyboard.releaseAll();
-    */
-  }
+        // bleKB.NumLockOn ? digitalWrite(led1,HIGH) : digitalWrite(led1,LOW);
+        // bleKB.CapsLockOn ? ? digitalWrite(led2,HIGH) : digitalWrite(led2,LOW);
+        // bleKB.ScrollLockOn ? ? digitalWrite(led3,HIGH) : digitalWrite(led3,LOW);
 
-  Serial.println("Waiting 5 seconds...");
-  delay(5000);
+        //
+        // Below is an example of pressing multiple keyboard modifiers
+        // which by default is commented out.
+        /*
+        Serial.println("Sending Ctrl+Alt+Delete...");
+        bleKB.press(KEY_LEFT_CTRL);
+        bleKB.press(KEY_LEFT_ALT);
+        bleKB.press(KEY_DELETE);
+        delay(100);
+        bleKB.releaseAll();
+        */
+    }
+
+    Serial.println("Waiting 5 seconds...");
+    delay(5000);
 }

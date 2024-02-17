@@ -528,10 +528,24 @@ void BleKeyboard::onDisconnect(BLEServer* pServer) {
 #endif // !USE_NIMBLE
 }
 
+typedef struct{
+        uint8_t bmNumLock : 1;
+        uint8_t bmCapsLock : 1;
+        uint8_t bmScrollLock : 1;
+        uint8_t bmReserved : 5;
+} KbdLEDsType;
+
+// void BleKeyboard::onWrite(BLECharacteristic* me) {
+//   uint8_t* value = (uint8_t*)(me->getValue().c_str());
+//   (void)value;
+//   ESP_LOGI(LOG_TAG, "special keys: %d", *value);
+// }
+
 void BleKeyboard::onWrite(BLECharacteristic* me) {
-  uint8_t* value = (uint8_t*)(me->getValue().c_str());
-  (void)value;
-  ESP_LOGI(LOG_TAG, "special keys: %d", *value);
+  KbdLEDsType* myKbdLEDs = (KbdLEDsType*)(me->getValue().c_str());
+  NumLockOn    = myKbdLEDs->bmNumLock;
+  CapsLockOn   = myKbdLEDs->bmCapsLock;
+  ScrollLockOn = myKbdLEDs->bmScrollLock;
 }
 
 void BleKeyboard::delay_ms(uint64_t ms) {
